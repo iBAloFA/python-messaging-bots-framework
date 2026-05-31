@@ -1,7 +1,6 @@
-# app/discord_main.py
 import discord
 import logging
-import os
+from config import settings
 from app.handlers.llm_engine import get_ai_response
 
 logging.basicConfig(level=logging.INFO)
@@ -19,7 +18,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-    # Ignore messages sent by the bot itself to prevent infinite feedback loops
+    # Ignore messages sent by the bot itself to prevent infinite loops
     if message.author == client.user:
         return
 
@@ -30,9 +29,9 @@ async def on_message(message):
         await message.channel.send(ai_reply)
 
 if __name__ == "__main__":
-    # Pull token directly from global OS environments securely
-    token = os.getenv("DISCORD_TOKEN")
-    if token:
+    # Pull token directly from centralized pydantic configuration settings
+    token = settings.discord_token
+    if token and token != "PASTE_YOUR_DISCORD_BOT_TOKEN_HERE":
         client.run(token)
     else:
-        logger.error("Failed to boot Discord Engine: DISCORD_TOKEN missing from environment settings.")
+        logger.error("Failed to boot Discord Engine: DISCORD_TOKEN missing or unconfigured in .env file.")
