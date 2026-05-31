@@ -1,0 +1,7 @@
+aiogram
+openai
+pydantic
+pydantic-settings
+httpx
+uvicorn
+fastapi
