@@ -1,34 +1,23 @@
+# app/handlers/commands.py
 from aiogram import types
-from aiogram.filters import Command
 from app.database.state_store import state_store
 
 async def cmd_start(message: types.Message):
-    """Greets the user and boots their local state payload."""
-    user_id = str(message.from_user.id)
-    state_store.clear_session(user_id) # Fresh instantiation
+    user_id = f"tg_{message.from_user.id}"
+    state_store.update_session(user_id, state="START", history=[])
     
     welcome_text = (
-        f"👋 Hello, {message.from_user.first_name}!\n\n"
-        "Welcome to the **Tendem Framework Engine**. I am an AI-powered messaging bot.\n\n"
-        "📌 **Available Actions:**\n"
-        "• Talk to me normally to interact with the LLM.\n"
-        "• Type /reset to purge your conversation data storage.\n"
-        "• Type /help for details."
+        "🌲 **Welcome to the Python Messaging Bot Framework!**\n\n"
+        "This system features multi-platform routing pipelines and stable SQLite state engines.\n\n"
+        "💬 *Send any plain text to converse with the core fallback AI!*"
     )
     await message.answer(welcome_text, parse_mode="Markdown")
 
 async def cmd_help(message: types.Message):
-    """Returns application support parameters."""
-    help_text = (
-        "💡 **Help Center**\n\n"
-        "This bot uses an asynchronous pipeline linked to a robust state persistence architecture.\n\n"
-        "• **/start** - Boot up execution\n"
-        "• **/reset** - Wipe application session memory"
-    )
+    help_text = "🛠️ **Available Core Sub-Commands:**\n\n/start - Reset interface\n/help - View schema details\n/reset - Wipe memory logs"
     await message.answer(help_text, parse_mode="Markdown")
 
 async def cmd_reset(message: types.Message):
-    """Clears persistence schema cache for targeted user ID."""
-    user_id = str(message.from_user.id)
+    user_id = f"tg_{message.from_user.id}"
     state_store.clear_session(user_id)
-    await message.answer("🔄 **Session memory wiped cleanly.** Your conversation has been completely reset.")
+    await message.answer("🧹 *Session scratchpad memory successfully cleared.*", parse_mode="Markdown")

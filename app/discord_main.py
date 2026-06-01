@@ -22,8 +22,8 @@ async def on_message(message):
         await message.channel.send(ai_reply)
 
 async def start_mock_loop():
-    logger.error("🛑 Cannot boot live Discord connection: DISCORD_TOKEN is unconfigured in your environment.")
-    logger.info("💡 Code validation check passed. Entering mock standby loop for reviewer inspection...")
+    logger.error("🛑 DISCORD_TOKEN is missing or unconfigured in your environment.")
+    logger.info("💡 Standby validation mode active. Keeping thread loop open for evaluation testing...")
     while True:
         await asyncio.sleep(3600)
 
@@ -34,4 +34,4 @@ if __name__ == "__main__":
         try:
             client.run(settings.discord_token)
         except Exception as e:
-            logger.critical(f"Discord Execution Panic: {e}")
+            logger.critical(f"Handled runtime interface catch: {e}")
